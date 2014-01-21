@@ -1,0 +1,391 @@
+-- phpMyAdmin SQL Dump
+-- version 4.0.6deb1
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Jan 21, 2014 at 04:53 PM
+-- Server version: 5.5.34-0ubuntu0.13.10.1
+-- PHP Version: 5.5.3-1ubuntu2.1
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Database: `school`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Academic_Year`
+--
+
+CREATE TABLE IF NOT EXISTS `Academic_Year` (
+  `year_id` int(11) NOT NULL,
+  PRIMARY KEY (`year_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Administrator`
+--
+
+CREATE TABLE IF NOT EXISTS `Administrator` (
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Attendance`
+--
+
+CREATE TABLE IF NOT EXISTS `Attendance` (
+  `user_id` int(11) NOT NULL,
+  `date` datetime NOT NULL,
+  `subject_id` int(11) NOT NULL,
+  PRIMARY KEY (`user_id`,`date`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Department`
+--
+
+CREATE TABLE IF NOT EXISTS `Department` (
+  `department_id` int(11) NOT NULL,
+  `department_name` varchar(15) NOT NULL,
+  PRIMARY KEY (`department_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Department_Grade_Subject`
+--
+
+CREATE TABLE IF NOT EXISTS `Department_Grade_Subject` (
+  `subject_id` int(11) NOT NULL,
+  `department_id` int(11) NOT NULL,
+  `grade_id` int(11) NOT NULL,
+  `semester_id` int(11) NOT NULL,
+  PRIMARY KEY (`subject_id`,`department_id`,`grade_id`,`semester_id`),
+  KEY `department_id` (`department_id`),
+  KEY `semester_id` (`semester_id`),
+  KEY `grade_id` (`grade_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Examination`
+--
+
+CREATE TABLE IF NOT EXISTS `Examination` (
+  `exam_id` int(11) NOT NULL,
+  PRIMARY KEY (`exam_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Grade`
+--
+
+CREATE TABLE IF NOT EXISTS `Grade` (
+  `grade_id` int(11) NOT NULL,
+  PRIMARY KEY (`grade_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Message`
+--
+
+CREATE TABLE IF NOT EXISTS `Message` (
+  `ms_id` int(11) NOT NULL,
+  `to` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `title` char(10) NOT NULL,
+  `Body` text NOT NULL,
+  PRIMARY KEY (`ms_id`),
+  KEY `form` (`to`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `News`
+--
+
+CREATE TABLE IF NOT EXISTS `News` (
+  `news_id` int(11) NOT NULL,
+  `title` char(10) NOT NULL,
+  `body` text NOT NULL,
+  `date` datetime NOT NULL,
+  PRIMARY KEY (`news_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Parent`
+--
+
+CREATE TABLE IF NOT EXISTS `Parent` (
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Role`
+--
+
+CREATE TABLE IF NOT EXISTS `Role` (
+  `role_id` int(10) NOT NULL,
+  `type` char(10) NOT NULL,
+  PRIMARY KEY (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Semester`
+--
+
+CREATE TABLE IF NOT EXISTS `Semester` (
+  `semester_id` int(11) NOT NULL,
+  PRIMARY KEY (`semester_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Student`
+--
+
+CREATE TABLE IF NOT EXISTS `Student` (
+  `user_id` int(11) NOT NULL,
+  `parent_id` int(11) NOT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Student_Grade`
+--
+
+CREATE TABLE IF NOT EXISTS `Student_Grade` (
+  `year_id` int(11) NOT NULL,
+  `grade_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`year_id`,`grade_id`,`user_id`),
+  KEY `grade_id` (`grade_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Student_Subject`
+--
+
+CREATE TABLE IF NOT EXISTS `Student_Subject` (
+  `user_id` int(11) NOT NULL,
+  `subject_id` int(11) NOT NULL,
+  PRIMARY KEY (`user_id`,`subject_id`),
+  KEY `subject_id` (`subject_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Student_Subject_Exam_Result`
+--
+
+CREATE TABLE IF NOT EXISTS `Student_Subject_Exam_Result` (
+  `user_id` int(11) NOT NULL,
+  `exam_id` int(11) NOT NULL,
+  `subject_id` int(11) NOT NULL,
+  `mark` double NOT NULL,
+  PRIMARY KEY (`user_id`,`exam_id`,`subject_id`),
+  KEY `exam_id` (`exam_id`),
+  KEY `subject_id` (`subject_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Subject`
+--
+
+CREATE TABLE IF NOT EXISTS `Subject` (
+  `subject_id` int(11) NOT NULL,
+  `subject` varchar(15) NOT NULL,
+  PRIMARY KEY (`subject_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Teacher`
+--
+
+CREATE TABLE IF NOT EXISTS `Teacher` (
+  `user_id` int(11) NOT NULL,
+  `subject_id` int(11) NOT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `User`
+--
+
+CREATE TABLE IF NOT EXISTS `User` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL,
+  `email` varchar(64) NOT NULL,
+  `phone_number` varchar(16) NOT NULL,
+  `username` varchar(16) NOT NULL,
+  `password` varchar(32) NOT NULL,
+  `confirmcode` varchar(32) NOT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `User`
+--
+
+INSERT INTO `User` (`user_id`, `name`, `email`, `phone_number`, `username`, `password`, `confirmcode`) VALUES
+(3, 'morris kinyori stephen', 'morriskinyori@yahoo.com', '', 'morris@gmail', '64dbed9774a7514e8e4fb4be7de6eeed', 'n'),
+(5, 'stephen kinyori', 'kinyorimorris@gmail.com', '', 'stevekinyori', 'd84cd0020059811f84c587969340acbc', '3a87793dbe688a5107ed05d235570bab');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `id_user` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL,
+  `email` varchar(64) NOT NULL,
+  `phone_number` varchar(16) NOT NULL,
+  `username` varchar(16) NOT NULL,
+  `password` varchar(32) NOT NULL,
+  `confirmcode` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id_user`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id_user`, `name`, `email`, `phone_number`, `username`, `password`, `confirmcode`) VALUES
+(1, 'stephen morris kinyori', 'kinyorimorris@gmail.com', '', 'kinyoristephen', '64dbed9774a7514e8e4fb4be7de6eeed', 'y'),
+(2, 'morris', 'morriskinyori@gmail.com', '', 'morriskinyori', '64dbed9774a7514e8e4fb4be7de6eeed', 'y');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `User_role`
+--
+
+CREATE TABLE IF NOT EXISTS `User_role` (
+  `role_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`role_id`,`user_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `Administrator`
+--
+ALTER TABLE `Administrator`
+  ADD CONSTRAINT `Administrator_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Attendance`
+--
+ALTER TABLE `Attendance`
+  ADD CONSTRAINT `Attendance_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Student` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Department_Grade_Subject`
+--
+ALTER TABLE `Department_Grade_Subject`
+  ADD CONSTRAINT `Department_Grade_Subject_ibfk_1` FOREIGN KEY (`subject_id`) REFERENCES `Subject` (`subject_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Department_Grade_Subject_ibfk_2` FOREIGN KEY (`department_id`) REFERENCES `Department` (`department_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Department_Grade_Subject_ibfk_3` FOREIGN KEY (`semester_id`) REFERENCES `Semester` (`semester_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Department_Grade_Subject_ibfk_4` FOREIGN KEY (`grade_id`) REFERENCES `Grade` (`grade_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Parent`
+--
+ALTER TABLE `Parent`
+  ADD CONSTRAINT `Parent_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Student`
+--
+ALTER TABLE `Student`
+  ADD CONSTRAINT `Student_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Student_Grade`
+--
+ALTER TABLE `Student_Grade`
+  ADD CONSTRAINT `Student_Grade_ibfk_1` FOREIGN KEY (`grade_id`) REFERENCES `Grade` (`grade_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Student_Grade_ibfk_2` FOREIGN KEY (`year_id`) REFERENCES `Academic_Year` (`year_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Student_Grade_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `Student` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Student_Subject`
+--
+ALTER TABLE `Student_Subject`
+  ADD CONSTRAINT `Student_Subject_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Student` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Student_Subject_ibfk_2` FOREIGN KEY (`subject_id`) REFERENCES `Subject` (`subject_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Student_Subject_Exam_Result`
+--
+ALTER TABLE `Student_Subject_Exam_Result`
+  ADD CONSTRAINT `Student_Subject_Exam_Result_ibfk_1` FOREIGN KEY (`exam_id`) REFERENCES `Examination` (`exam_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Student_Subject_Exam_Result_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `Student` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Student_Subject_Exam_Result_ibfk_3` FOREIGN KEY (`subject_id`) REFERENCES `Subject` (`subject_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Teacher`
+--
+ALTER TABLE `Teacher`
+  ADD CONSTRAINT `Teacher_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `User_role`
+--
+ALTER TABLE `User_role`
+  ADD CONSTRAINT `User_role_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `User_role_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `Role` (`role_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
